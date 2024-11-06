@@ -3,9 +3,9 @@
 public abstract class ProtecaoBase
 {
     public string? IED { get; set; }
-    public float limiar { get; set; }
+    public float? limiar { get; set; }
 
-    public ProtecaoBase(string? ied, float limiar)
+    public ProtecaoBase(string? ied, float? limiar)
     {
         this.IED = ied;
         this.limiar = limiar;
