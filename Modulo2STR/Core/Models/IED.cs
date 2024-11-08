@@ -25,16 +25,15 @@ public class IED
         }
     }
 
-    // Método para iniciar o monitoramento em uma thread
     public void IniciarMonitoramento()
     {
         new Thread(() =>
         {
             while (true)
             {
-                // Monitoramento contínuo com um intervalo de tempo
+
                 VerificarProtecoes();
-                Thread.Sleep(1000); // Intervalo de verificação
+                Thread.Sleep(1000); 
             }
         }).Start();
     }
@@ -43,14 +42,14 @@ public class IED
     {
         Console.WriteLine($"IED {Id}: Verificando proteções para corrente = {corrente} A");
 
-        // Verifica proteção 50
-        if (protecao50.VerificarSobrecorrente(corrente))
+        
+        if (protecao50.verificarSobrecorrente(corrente))
         {
             protecao50.EmitirAlerta();
         }
 
-        // Verifica proteção 51
-        if (protecao51.VerificarSobrecorrente(corrente))
+        
+        if (protecao51.verificarSobrecorrente(corrente))
         {
             protecao51.EmitirAlerta();
         }
