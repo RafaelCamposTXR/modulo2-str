@@ -30,4 +30,33 @@ class Program
 
         // 5. Encerra o monitoramento (opcional para finalizar o programa)
         Console.WriteLine("Pressione qualquer tecla para encerrar o monitoramento...");
-        Consol
+        Console.ReadKey();
+        ied1.PararMonitoramento();
+        ied2.PararMonitoramento();
+        ied3.PararMonitoramento();
+
+        Console.WriteLine("Monitoramento encerrado.");
+    }
+
+    // Método para simular variações de corrente nos IEDs
+    private static async Task SimularVariacoesDeCorrente(GerenciadorIED gerenciador)
+    {
+        // Alterna valores de corrente para simular mudanças e disparar proteções
+        gerenciador.AtualizarIED("IED_01", 50f);  // Valor seguro
+        await Task.Delay(500);
+
+        gerenciador.AtualizarIED("IED_02", 120f); // Valor de sobrecorrente para Protecao50
+        await Task.Delay(500);
+
+        gerenciador.AtualizarIED("IED_03", 90f);  // Valor seguro
+        await Task.Delay(500);
+
+        gerenciador.AtualizarIED("IED_01", 130f); // Valor de sobrecorrente para Protecao50 e Protecao51
+        await Task.Delay(500);
+
+        gerenciador.AtualizarIED("IED_02", 60f);  // Valor seguro novamente
+        await Task.Delay(500);
+
+        gerenciador.AtualizarIED("IED_03", 140f); // Valor de sobrecorrente para Protecao50
+    }
+}
