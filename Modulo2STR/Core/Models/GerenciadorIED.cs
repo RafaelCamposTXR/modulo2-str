@@ -1,12 +1,33 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Modulo2STR.Core.Models
+public class GerenciadorIED
 {
-    internal class GerenciadorIED
+    private Dictionary<string, IED> iedLista = new Dictionary<string, IED>();
+
+    public void AdicionarIED(IED novoIed)
     {
+        if (!iedLista.ContainsKey(novoIed.Id))
+        {
+            iedLista[novoIed.Id] = novoIed;
+            Console.WriteLine($"IED {novoIed.Id} adicionado.");
+        }
+        else
+        {
+            Console.WriteLine($"IED {novoIed.Id} já existe.");
+        }
+    }
+
+    public void AtualizarIED(string dispositivoId, float novaCorrente)
+    {
+        if (iedLista.ContainsKey(dispositivoId))
+        {
+            iedLista[dispositivoId].Corrente = novaCorrente;
+            Console.WriteLine($"Corrente do IED {dispositivoId} atualizada para {novaCorrente} A");
+        }
+        else
+        {
+            Console.WriteLine($"IED {dispositivoId} não encontrado.");
+        }
     }
 }
