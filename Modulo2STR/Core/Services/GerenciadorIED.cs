@@ -15,7 +15,7 @@ public class GerenciadorIED
         }
     }
 
-    private void AtualizarOuCriarIED(string id, float novaCorrente)
+    public void AtualizarOuCriarIED(string id, float novaCorrente)
     {
         if (iedLista.ContainsKey(id))
         {
@@ -28,7 +28,6 @@ public class GerenciadorIED
             novoIed.Corrente = novaCorrente;
             novoIed.IniciarThread();
             iedLista[id] = novoIed;
-            Console.WriteLine($"Novo IED {id} criado e monitoramento iniciado.");
         }
     }
 
@@ -51,7 +50,18 @@ public class GerenciadorIED
         var timer = new Timer((e) =>
         {
             VerificarInatividade();
-        }, null, TimeSpan.Zero, TimeSpan.FromMinutes(1)); 
+        }, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+    }
+
+    public void PararMonitoramento()
+    {
+        Console.WriteLine("Encerramento do monitoramento de todos os IEDs em andamento");
+        foreach (var ied in iedLista.Values)
+        {
+            ied.DesligarThread(); 
+        }
+
+        iedLista.Clear(); 
+        Console.WriteLine("Monitoramento de todos os IEDs foi parado.");
     }
 }
-

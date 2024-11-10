@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;  // Para facilitar a criação de JSON
+using Newtonsoft.Json;  
 
 namespace Modulo2STR.Core.Services
 {
@@ -41,10 +41,8 @@ namespace Modulo2STR.Core.Services
             }
         }
 
-        // Novo método para gerar o pacote JSON e enviar
         public async Task EnviarPacoteDeteccaoCurtoAsync(string ipDestino, int porta, string IED, int corrente)
         {
-            // Criando o pacote em formato JSON
             var pacote = new
             {
                 modulo = 2,
@@ -53,13 +51,10 @@ namespace Modulo2STR.Core.Services
                 data_hora = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
             };
 
-            // Convertendo para JSON
             string mensagem = JsonConvert.SerializeObject(pacote);
 
-            // Enviando a mensagem via TCP ou UDP
-            await EnviarMensagemTcpAsync(ipDestino, porta, mensagem);  // Exemplo com TCP
-            // Ou
-            // await EnviarMensagemUdpAsync(ipDestino, porta, mensagem); // Para UDP
+
+            await EnviarMensagemTcpAsync(ipDestino, porta, mensagem); 
         }
     }
 }

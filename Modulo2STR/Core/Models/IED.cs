@@ -41,7 +41,7 @@ public class IED
             while (monitorando)
             {
                 Thread.Sleep(1000); 
-                VerificarProtecoes();
+                //VerificarProtecoes();
             }
         });
         monitorando = true;
@@ -54,22 +54,22 @@ public class IED
         if (monitorThread != null && monitorThread.IsAlive)
         {
             monitorThread.Join();
-            Console.WriteLine($"Monitoramento do IED {Id} foi parado.");
+            Console.WriteLine($"Monitoramento do IED {Id} foi desligado.");
         }
     }
 
     private String? VerificarProtecoes()
     {
-        Console.WriteLine($"IED {Id}: Verificando proteções para corrente = {corrente} A");
+        Console.WriteLine($"IED {Id}: Verificando condição de circuito em corrente = {corrente} A");
 
         if (protecao50.verificarSobrecorrente(corrente))
         {
-            return "Sobrecorrente detectada em Proteção 50.";
+            return "Proteção 50 identificou anomalia.";
         }
 
         if (protecao51.verificarSobrecorrente(corrente))
         {
-            return "Sobrecorrente detectada em Proteção 51.";
+            return "Proteção 51 identificou anomalia.";
         }
 
         return "";
