@@ -1,9 +1,14 @@
+using System;
+using System.Threading;
+
 public class IED
 {
     public string Id { get; private set; }
     private float corrente;
     private readonly Protecao50 protecao50;
     private readonly Protecao51 protecao51;
+    private Thread monitorThread;
+    private bool monitorando = true;
 
     public IED(string id)
     {
@@ -20,6 +25,7 @@ public class IED
             if (corrente != value)
             {
                 corrente = value;
+                Console.WriteLine($"\n\nCorrente do IED {Id} atualizada para {corrente} A");
                 VerificarProtecoes();
             }
         }
@@ -27,31 +33,38 @@ public class IED
 
     public void IniciarMonitoramento()
     {
-        new Thread(() =>
+        monitorThread = new Thread(() =>
         {
-            while (true)
+            while (monitorando)
             {
-
-                VerificarProtecoes();
-                Thread.Sleep(1000); 
+                Thread.Sleep(100); 
             }
-        }).Start();
+        });
+        monitorThread.Start();
+    }
+
+    public void PararMonitoramento()
+    {
+        monitorando = false;
+        if (monitorThread != null && monitorThread.IsAlive)
+        {
+            monitorThread.Join();
+        }
     }
 
     private void VerificarProtecoes()
     {
         Console.WriteLine($"IED {Id}: Verificando proteções para corrente = {corrente} A");
 
-        
         if (protecao50.verificarSobrecorrente(corrente))
         {
-            protecao50.EmitirAlerta();
+            Console.WriteLine("Sobrecorrente detectado em Protecao 50.");
+            return;
         }
 
-        
         if (protecao51.verificarSobrecorrente(corrente))
         {
-            protecao51.EmitirAlerta();
+            Console.WriteLine("Ultrapassou o limiar da Protecao 51.");
         }
     }
 }
