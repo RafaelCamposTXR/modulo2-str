@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Modulo2STR.Core.Services
 {
+    using Modulo2STR.Core.Models;
     using System;
     using System.Net;
     using System.Net.Sockets;
@@ -13,12 +14,12 @@ namespace Modulo2STR.Core.Services
     using System.Text.Json;
     using System.Threading.Tasks;
 
-    public class ServicoSocket
+    public class MonitorRede
     {
         private readonly GerenciadorIED gerenciadorIED;
         private readonly int porta;
 
-        public ServicoSocket(GerenciadorIED gerenciador, int porta)
+        public MonitorRede(GerenciadorIED gerenciador, int porta)
         {
             this.gerenciadorIED = gerenciador;
             this.porta = porta;

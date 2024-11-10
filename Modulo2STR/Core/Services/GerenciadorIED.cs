@@ -1,3 +1,4 @@
+using Modulo2STR.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -54,8 +55,3 @@ public class GerenciadorIED
     }
 }
 
-public class MensagemCorrente
-{
-    public string Id { get; set; }
-    public float Corrente { get; set; }
-}

@@ -40,8 +40,7 @@ public class IED
         {
             while (monitorando)
             {
-                // Simulando o monitoramento da corrente e verificando proteções
-                Thread.Sleep(1000); // A cada segundo, verifica as proteções (apenas simulação)
+                Thread.Sleep(1000); 
                 VerificarProtecoes();
             }
         });
@@ -65,13 +64,11 @@ public class IED
 
         if (protecao50.verificarSobrecorrente(corrente))
         {
-            // Aqui você poderia chamar um método para enviar um alerta pela rede
             return "Sobrecorrente detectada em Proteção 50.";
         }
 
         if (protecao51.verificarSobrecorrente(corrente))
         {
-            // Aqui você poderia chamar um método para enviar um alerta pela rede
             return "Sobrecorrente detectada em Proteção 51.";
         }
 
