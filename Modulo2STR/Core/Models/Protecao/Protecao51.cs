@@ -1,40 +1,83 @@
-﻿public class Protecao51 : ProtecaoBase
-{
-    private float Idisparo;  
-    private float k;  
-    private float a;  
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
-    
-    public Protecao51(string? IED = null, float Idisparo = 100f, float k = 1.0f, float a = 0.02f)
-        : base(IED, null)  
+public class Protecao51 : ProtecaoBase
+{
+    private const float K = 80.0f;
+    private const float Alpha = 2.0f;
+    private CancellationTokenSource cancellationTokenSource;
+    private DateTime inicioTemporizador;
+    private float tempoAtrasoAtual;
+
+    public Protecao51(string? IED = null, float? limiar50 = null, float? limiar51 = null)
+        : base(IED, limiar50 ?? 500f, limiar51 ?? 100f)
     {
-        this.Idisparo = Idisparo;
-        this.k = k;
-        this.a = a;
     }
 
-    
-    public void AtualizarLimiar(float corrente)
+    public override bool verificarSobrecorrente(float correnteAtual)
     {
-        if (corrente <= Idisparo)
+        if (correnteAtual > limiar51)
         {
-            limiar = null;
+            Console.WriteLine("Fazendo os cálculos de temporização.");
+
+            tempoAtrasoAtual = CalcularTempoAtraso(correnteAtual);
+            Console.WriteLine($"tempo atraso atual: {tempoAtrasoAtual}");
+
+            if (cancellationTokenSource == null)
+            {
+                IniciarTemporizador(correnteAtual);
+            }
+
+            return true;
         }
         else
         {
-            limiar = k / (float)(Math.Pow(corrente / Idisparo, a) - 1);
+            CancelarTemporizador();
+            return false;
         }
     }
 
-    public override bool verificarSobrecorrente(float corrente)
+    private float CalcularTempoAtraso(float correnteAtual)
     {
-        AtualizarLimiar(corrente);
+        return K / (float)(Math.Pow(correnteAtual / limiar51.Value, Alpha) - 1);
+    }
 
-        if (limiar == null)
+    private void IniciarTemporizador(float correnteAtual)
+    {
+        Console.WriteLine("\nTemporizador iniciado.");
+        cancellationTokenSource = new CancellationTokenSource();
+        CancellationToken token = cancellationTokenSource.Token;
+        inicioTemporizador = DateTime.Now;
+
+        _ = Task.Run(async () =>
         {
-            return false;
-        }
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    float tempoDecorrido = (float)(DateTime.Now - inicioTemporizador).TotalSeconds;
+                    Console.WriteLine($"tempo decorrido: {tempoDecorrido}");
 
-        return corrente > limiar;
+                    if (tempoDecorrido >= tempoAtrasoAtual)
+                    {
+                        EmitirAlerta();
+                        break;
+                    }
+
+                    await Task.Delay(50, token);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // Ignora exceções de cancelamento
+            }
+        }, token);
+    }
+
+    public void CancelarTemporizador()
+    {
+        cancellationTokenSource?.Cancel();
+        cancellationTokenSource = null;
     }
 }
