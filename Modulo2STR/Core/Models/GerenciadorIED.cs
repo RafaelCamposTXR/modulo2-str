@@ -23,11 +23,28 @@ public class GerenciadorIED
         if (iedLista.ContainsKey(dispositivoId))
         {
             iedLista[dispositivoId].Corrente = novaCorrente;
-            Console.WriteLine($"Corrente do IED {dispositivoId} atualizada para {novaCorrente} A");
         }
         else
         {
             Console.WriteLine($"IED {dispositivoId} não encontrado.");
+        }
+    }
+
+    public void IniciarMonitoramentoTodos()
+    {
+        foreach (var ied in iedLista.Values)
+        {
+            ied.IniciarMonitoramento();
+            Console.WriteLine($"Monitoramento iniciado para o IED {ied.Id}");
+        }
+    }
+
+    public void PararMonitoramentoTodos()
+    {
+        foreach (var ied in iedLista.Values)
+        {
+            ied.PararMonitoramento();
+            Console.WriteLine($"Monitoramento parado para o IED {ied.Id}");
         }
     }
 }
