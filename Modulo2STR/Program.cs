@@ -5,6 +5,17 @@ class Program
 {
     static async Task Main(string[] args)
     {
+
+        Task servidorTask = Task.Run(async () =>
+        {
+            ServidorTcp servidor = new ServidorTcp(5000);
+            await servidor.IniciarAsync();
+        });
+
+        Console.WriteLine("Servidor TCP rodando em segundo plano.");
+
+        
+
         GerenciadorIED gerenciador = new GerenciadorIED();
 
         
@@ -29,6 +40,8 @@ class Program
         gerenciador.PararMonitoramento();
 
         Console.WriteLine("Monitoramento encerrado.");
+
+        await servidorTask;
     }
 
     private static async Task SimularVariacoesDeCorrente(GerenciadorIED gerenciador)
@@ -37,4 +50,6 @@ class Program
         await Task.Delay(500);
 
     }
+
+
 }

@@ -57,11 +57,11 @@ public class Protecao51 : ProtecaoBase
                 while (!token.IsCancellationRequested)
                 {
                     float tempoDecorrido = (float)(DateTime.Now - inicioTemporizador).TotalSeconds;
-                    Console.WriteLine($"tempo decorrido: {tempoDecorrido}");
+                    //Console.WriteLine($"tempo decorrido: {tempoDecorrido}");
 
                     if (tempoDecorrido >= tempoAtrasoAtual)
                     {
-                        EmitirAlerta();
+                        //EmitirAlerta();
                         break;
                     }
 
@@ -70,7 +70,7 @@ public class Protecao51 : ProtecaoBase
             }
             catch (TaskCanceledException)
             {
-                // Ignora exceções de cancelamento
+                
             }
         }, token);
     }

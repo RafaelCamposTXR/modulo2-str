@@ -1,3 +1,4 @@
+using Modulo2STR.Core.Services;
 using System;
 using System.Threading;
 
@@ -11,12 +12,16 @@ public class IED
     private bool monitorando = true;
     public DateTime UltimaAtualizacao { get; private set; }
 
+
+
+
     public IED(string id)
     {
         Id = id;
         protecao50 = new Protecao50(id);
         protecao51 = new Protecao51(id);
         UltimaAtualizacao = DateTime.Now;
+     
     }
 
     public float Corrente
@@ -29,7 +34,7 @@ public class IED
                 corrente = value;
                 UltimaAtualizacao = DateTime.Now;
                 Console.WriteLine($"\n\nCorrente do IED {Id} atualizada para {corrente} A");
-                Console.WriteLine(VerificarProtecoes());
+                VerificarProtecoes();
             }
         }
     }
@@ -58,12 +63,15 @@ public class IED
         }
     }
 
-    private String? VerificarProtecoes()
+    private async Task<string?> VerificarProtecoes()
     {
         Console.WriteLine($"IED {Id}: Verificando condição de circuito em corrente = {corrente} A");
 
+        var envioMensagem = new EnvioMensagem(); 
+
         if (protecao50.verificarSobrecorrente(corrente))
         {
+            await envioMensagem.EnviarPacoteDeteccaoCurtoAsync("127.0.0.1", 5000, Id, corrente);
             return "Proteção 50 identificou anomalia.";
         }
 

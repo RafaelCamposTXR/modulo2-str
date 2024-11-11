@@ -41,7 +41,7 @@ namespace Modulo2STR.Core.Services
             }
         }
 
-        public async Task EnviarPacoteDeteccaoCurtoAsync(string ipDestino, int porta, string IED, int corrente)
+        public async Task EnviarPacoteDeteccaoCurtoAsync(string ipDestino, int porta, string IED, float corrente)
         {
             var pacote = new
             {
