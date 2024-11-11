@@ -56,7 +56,7 @@ public class Protecao51 : ProtecaoBase
             while (!token.IsCancellationRequested)
             {
                 float tempoDecorrido = (float)(DateTime.Now - inicioTemporizador).TotalSeconds;
-                ConsoleWrapper.WriteLine($"tempo decorrido: {tempoDecorrido}", "vermelho");
+                //ConsoleWrapper.WriteLine($"tempo decorrido: {tempoDecorrido}", "vermelho");
 
                 if (tempoDecorrido >= tempoAtrasoAtual)
                 {
