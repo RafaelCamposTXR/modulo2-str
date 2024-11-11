@@ -24,13 +24,14 @@ namespace Modulo2STR.Core.Services
             while (true)
             {
                 TcpClient client = await listener.AcceptTcpClientAsync();
-                Console.WriteLine("Cliente conectado.");  //uma conexão nova é feita a cada pacote, analisar isso depois
+                //Console.WriteLine("Cliente conectado.");  //uma conexão nova é feita a cada pacote, analisar isso depois
 
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = new byte[1024];
                 int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
 
                 string mensagemRecebida = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
                 Console.WriteLine($"Mensagem capturada pelo Servidor TCP: {mensagemRecebida}");
 
                 client.Close();

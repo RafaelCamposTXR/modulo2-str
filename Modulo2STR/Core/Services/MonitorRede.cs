@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Modulo2STR.Core.Services
 {
     using Modulo2STR.Core.Models;
+    using Modulo2STR.Core.utils;
     using System;
     using System.Net;
     using System.Net.Sockets;
@@ -29,7 +30,8 @@ namespace Modulo2STR.Core.Services
         {
             TcpListener listener = new TcpListener(IPAddress.Any, porta);
             listener.Start();
-            Console.WriteLine($"SocketService escutando na porta {porta}...");
+
+            ConsoleWrapper.WriteLine($"SocketService escutando na porta {porta}...", "verde");
 
             while (true)
             {
@@ -48,20 +50,18 @@ namespace Modulo2STR.Core.Services
                     int bytesLidos = await stream.ReadAsync(buffer, 0, buffer.Length);
                     string mensagemJson = Encoding.UTF8.GetString(buffer, 0, bytesLidos);
 
-                    Console.WriteLine($"Mensagem recebida: {mensagemJson}");
-
                     var mensagemCorrente = JsonSerializer.Deserialize<MensagemCorrente>(mensagemJson);
 
                     if (mensagemCorrente != null)
                     {
-                        Console.WriteLine("Mensagem Capturada pelo monitor, referente ao ied: " +  mensagemCorrente.IED + " e valor de corrente: " + mensagemCorrente.Corrente);
+                        ConsoleWrapper.WriteLine("Mensagem Capturada pelo monitor, referente ao ied: " +  mensagemCorrente.IED + " e valor de corrente: " + mensagemCorrente.Corrente, "verde");
                         gerenciadorIED.ReceberMensagem(mensagemCorrente);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao processar cliente: {ex.Message}");
+                ConsoleWrapper.WriteLine($"Erro ao processar cliente: {ex.Message}", "verde");
             }
             finally
             {

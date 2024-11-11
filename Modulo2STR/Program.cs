@@ -1,5 +1,6 @@
 using Modulo2STR.Core.Models;
 using Modulo2STR.Core.Services;
+using Modulo2STR.Core.utils;
 using System.Threading.Tasks;
 
 class Program
@@ -13,7 +14,7 @@ class Program
             await servidor.IniciarAsync();
         });
 
-        Console.WriteLine("Servidor TCP rodando em segundo plano.");
+        ConsoleWrapper.WriteLine("Servidor TCP rodando em segundo plano.", "DarkBlue");
 
         // Criar GerenciadorIED e iniciar monitoramento de rede
         GerenciadorIED gerenciador = new GerenciadorIED();
@@ -23,6 +24,7 @@ class Program
             MonitorRede monitor = new MonitorRede(gerenciador, 4000); // Porta 5000, mesma do ServidorTcp
             await monitor.IniciarEscutaAsync();
         });
+
 
         Console.WriteLine("Monitor de Rede rodando em segundo plano.");
 
@@ -45,12 +47,11 @@ class Program
             switch (opcao)
             {
                 case "1":
-                    // Coletar dados do usuário
+
                     await EnviarMensagemManual();
                     break;
 
                 case "2":
-                    // Encerrar o loop e o monitoramento
                     continuar = false;
                     break;
 
@@ -58,11 +59,14 @@ class Program
                     Console.WriteLine("Opção inválida. Tente novamente.");
                     break;
             }
+            await Task.Delay(4000);
         }
 
         // Fim do programa
+
         Console.WriteLine("Encerrando monitoramento...");
         gerenciador.PararMonitoramento();
+
 
         Console.WriteLine("Monitoramento encerrado. Pressione qualquer tecla para finalizar.");
         Console.ReadKey();
@@ -76,28 +80,25 @@ class Program
 
         // Simulação de variações de corrente enviando diferentes mensagens
         await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied2", 5000);
-        await Task.Delay(10000);
+        await Task.Delay(500);
 
-        //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 20);
-        //await Task.Delay(20);
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 20);
+        await Task.Delay(500);
 
-        //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 300);
-        //await Task.Delay(500);
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 300);
+        await Task.Delay(500);
 
-        //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 2000);
-        //await Task.Delay(500);
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 2000);
+        await Task.Delay(500);
 
-        //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 3200);
-        //
-        //
-        //gerenciador.AtualizarOuCriarIED("ied1", 20);
-        //await Task.Delay(500);
     }
 
     private static async Task EnviarMensagemManual()
     {
+
         Console.Write("Insira o ID do IED: ");
         string idIed = Console.ReadLine();
+
 
         Console.Write("Insira o valor de corrente (float): ");
         if (float.TryParse(Console.ReadLine(), out float corrente))
@@ -111,6 +112,7 @@ class Program
         }
         else
         {
+
             Console.WriteLine("Valor de corrente inválido. Tente novamente.");
         }
     }
