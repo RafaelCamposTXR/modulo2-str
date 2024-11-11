@@ -14,7 +14,7 @@ class Program
             await servidor.IniciarAsync();
         });
 
-        ConsoleWrapper.WriteLine("Servidor TCP rodando em segundo plano.", "ciano");
+        ConsoleWrapper.WriteLine("Servidor TCP rodando em segundo plano, simulando comportamento dos módulos 6 e 3.", "ciano");
 
         // Criar GerenciadorIED e iniciar monitoramento de rede
         GerenciadorIED gerenciador = new GerenciadorIED();
@@ -26,7 +26,7 @@ class Program
         });
 
 
-        ConsoleWrapper.WriteLine("Monitor de Rede rodando em segundo plano.", "verde");
+        ConsoleWrapper.WriteLine("Monitor de Rede rodando em segundo plano, aguardando por pacotes do módulo 1.", "verde");
 
         // Executar o teste automático inicial
         Console.WriteLine("Executando teste de variação de corrente...");
@@ -37,9 +37,9 @@ class Program
         bool continuar = true;
         while (continuar)
         {
-            Console.WriteLine("\nMenu de Opções:");
-            Console.WriteLine("1. Enviar mensagem de teste manualmente");
-            Console.WriteLine("2. Fechar aplicação");
+            ConsoleWrapper.WriteLine("\nMenu de Opções:", "magenta");
+            ConsoleWrapper.WriteLine("1. Enviar mensagem de teste manualmente", "magenta");
+            ConsoleWrapper.WriteLine("2. Fechar aplicação", "magenta");
 
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();

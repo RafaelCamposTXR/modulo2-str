@@ -26,6 +26,6 @@ public abstract class ProtecaoBase
         // aqui era pra ser o começo de gerar pacote broadcast:
         //var mensagem = new MensagemBroadcast(IED, limiar.Value, "Sobrecorrente Instantânea");
         //gerenciaAlerta.EnviarAlerta(mensagem);
-        ConsoleWrapper.WriteLine($"\nAlerta! Sobrecorrente detectada no IED: {IED}.", "vermelho");
+        ConsoleWrapper.WriteLine($"\nAnomalia: Sobrecorrente detectada no IED: {IED}.", "vermelho");
     }
 }

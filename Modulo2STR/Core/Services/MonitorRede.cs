@@ -31,7 +31,7 @@ namespace Modulo2STR.Core.Services
             TcpListener listener = new TcpListener(IPAddress.Any, porta);
             listener.Start();
 
-            ConsoleWrapper.WriteLine($"SocketService escutando na porta {porta}...", "verde");
+            ConsoleWrapper.WriteLine($"Monitor escutando na porta {porta}", "verde");
 
             while (true)
             {

@@ -20,7 +20,7 @@ namespace Modulo2STR.Core.Services
         {
             TcpListener listener = new TcpListener(IPAddress.Any, _porta);
             listener.Start();
-            ConsoleWrapper.WriteLine($"Servidor TCP escutando na porta {_porta}...", "ciano");
+            ConsoleWrapper.WriteLine($"Servidor TCP escutando na porta {_porta}", "ciano");
 
             while (true)
             {
