@@ -77,6 +77,7 @@ public class IED
 
         if (protecao51.verificarSobrecorrente(corrente))
         {
+            await envioMensagem.EnviarPacoteDeteccaoCurtoAsync("127.0.0.1", 5000, Id, corrente);
             return "Proteção 51 identificou anomalia.";
         }
 

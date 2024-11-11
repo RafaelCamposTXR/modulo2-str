@@ -6,7 +6,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-
+        // Iniciar o servidor TCP em segundo plano
         Task servidorTask = Task.Run(async () =>
         {
             ServidorTcp servidor = new ServidorTcp(5000);
@@ -15,9 +15,8 @@ class Program
 
         Console.WriteLine("Servidor TCP rodando em segundo plano.");
 
-
+        // Criar GerenciadorIED e iniciar monitoramento de rede
         GerenciadorIED gerenciador = new GerenciadorIED();
-
 
         Task monitorRedeTask = Task.Run(async () =>
         {
@@ -27,39 +26,89 @@ class Program
 
         Console.WriteLine("Monitor de Rede rodando em segundo plano.");
 
-
-        string idIed = "IED12345";
-        float corrente = 123.45f;
-
-        var mensagem = new MensagemCorrente(idIed, corrente);
-
-
-        EnvioMensagem envioMensagem = new EnvioMensagem();
-
-
-        Console.WriteLine("Enviando mensagem com IED e corrente...");
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, idIed, corrente);
-
-        Console.WriteLine("Mensagem enviada.");
-
-        Console.WriteLine("Monitoramento iniciado para todos os IEDs. Pressione qualquer tecla para simular alterações de corrente...");
-        Console.ReadKey();
-
-
+        // Executar o teste automático inicial
+        Console.WriteLine("Executando teste de variação de corrente...");
         await SimularVariacoesDeCorrente(gerenciador);
+        Console.WriteLine("Teste concluído.");
 
-        Console.WriteLine("Pressione qualquer tecla para encerrar o monitoramento...");
-        Console.ReadKey();
+        // Exibir menu de opções ao usuário
+        bool continuar = true;
+        while (continuar)
+        {
+            Console.WriteLine("\nMenu de Opções:");
+            Console.WriteLine("1. Enviar mensagem de teste manualmente");
+            Console.WriteLine("2. Fechar aplicação");
+
+            Console.Write("Escolha uma opção: ");
+            string opcao = Console.ReadLine();
+
+            switch (opcao)
+            {
+                case "1":
+                    // Coletar dados do usuário
+                    await EnviarMensagemManual();
+                    break;
+
+                case "2":
+                    // Encerrar o loop e o monitoramento
+                    continuar = false;
+                    break;
+
+                default:
+                    Console.WriteLine("Opção inválida. Tente novamente.");
+                    break;
+            }
+        }
+
+        // Parar o monitoramento e encerrar a aplicação
+        Console.WriteLine("Encerrando monitoramento...");
         gerenciador.PararMonitoramento();
 
-        Console.WriteLine("Monitoramento encerrado.");
+        Console.WriteLine("Monitoramento encerrado. Pressione qualquer tecla para finalizar.");
+        Console.ReadKey();
 
         await Task.WhenAll(servidorTask, monitorRedeTask);
     }
 
     private static async Task SimularVariacoesDeCorrente(GerenciadorIED gerenciador)
     {
-        gerenciador.AtualizarOuCriarIED("ied1", 5000);
+        EnvioMensagem envioMensagem = new EnvioMensagem();
+
+        // Simulação de variações de corrente enviando diferentes mensagens
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 5000);
         await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 200);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 300);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 2000);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 3200);
+        await Task.Delay(500);
+    }
+
+    private static async Task EnviarMensagemManual()
+    {
+        // Coletar IED e corrente do usuário
+        Console.Write("Insira o ID do IED: ");
+        string idIed = Console.ReadLine();
+
+        Console.Write("Insira o valor de corrente (float): ");
+        if (float.TryParse(Console.ReadLine(), out float corrente))
+        {
+            EnvioMensagem envioMensagem = new EnvioMensagem();
+
+            // Enviar mensagem manual com os dados fornecidos
+            await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, idIed, corrente);
+            Console.WriteLine($"Mensagem enviada: IED={idIed}, Corrente={corrente}");
+        }
+        else
+        {
+            Console.WriteLine("Valor de corrente inválido. Tente novamente.");
+        }
     }
 }

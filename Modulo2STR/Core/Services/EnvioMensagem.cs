@@ -52,6 +52,7 @@ namespace Modulo2STR.Core.Services
             };
 
             string mensagem = JsonConvert.SerializeObject(pacote);
+            Console.WriteLine(mensagem);
 
 
             await EnviarMensagemTcpAsync(ipDestino, porta, mensagem); 

@@ -24,7 +24,7 @@ namespace Modulo2STR.Core.Services
             while (true)
             {
                 TcpClient client = await listener.AcceptTcpClientAsync();
-                Console.WriteLine("Cliente conectado.");
+                Console.WriteLine("Cliente conectado.");  //uma conexão nova é feita a cada pacote, analisar isso depois
 
                 NetworkStream stream = client.GetStream();
                 byte[] buffer = new byte[1024];

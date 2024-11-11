@@ -29,6 +29,7 @@ public class Protecao51 : ProtecaoBase
                 IniciarTemporizador(correnteAtual);
             }
 
+            EmitirAlerta();
             return true;
         }
         else
@@ -61,7 +62,7 @@ public class Protecao51 : ProtecaoBase
 
                     if (tempoDecorrido >= tempoAtrasoAtual)
                     {
-                        //EmitirAlerta();
+                        EmitirAlerta();
                         break;
                     }
 
