@@ -6,7 +6,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        // Iniciar o servidor TCP em segundo plano
+        //servidor TCP em segundo plano
         Task servidorTask = Task.Run(async () =>
         {
             ServidorTcp servidor = new ServidorTcp(5000);
@@ -20,7 +20,7 @@ class Program
 
         Task monitorRedeTask = Task.Run(async () =>
         {
-            MonitorRede monitor = new MonitorRede(gerenciador, 5000); // Porta 5000, mesma do ServidorTcp
+            MonitorRede monitor = new MonitorRede(gerenciador, 4000); // Porta 5000, mesma do ServidorTcp
             await monitor.IniciarEscutaAsync();
         });
 
@@ -75,11 +75,11 @@ class Program
         EnvioMensagem envioMensagem = new EnvioMensagem();
 
         // Simulação de variações de corrente enviando diferentes mensagens
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied2", 5000);
-        await Task.Delay(500);
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied2", 5000);
+        await Task.Delay(10000);
 
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 20);
-        await Task.Delay(500);
+        //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 20);
+        //await Task.Delay(20);
 
         //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 300);
         //await Task.Delay(500);
@@ -103,8 +103,10 @@ class Program
         if (float.TryParse(Console.ReadLine(), out float corrente))
         {
             EnvioMensagem envioMensagem = new EnvioMensagem();
+            GerenciadorIED gerenciador = new GerenciadorIED();
 
-            await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, idIed, corrente);
+            //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, idIed, corrente);
+            gerenciador.AtualizarOuCriarIED(idIed, corrente);
             //Console.WriteLine($"Mensagem enviada: IED={idIed}, Corrente={corrente}");
         }
         else

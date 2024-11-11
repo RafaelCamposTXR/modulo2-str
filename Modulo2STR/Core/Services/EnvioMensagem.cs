@@ -52,7 +52,6 @@ namespace Modulo2STR.Core.Services
             };
 
             string mensagem = JsonConvert.SerializeObject(pacote);
-            Console.WriteLine(mensagem);
 
 
             await EnviarMensagemTcpAsync(ipDestino, porta, mensagem); 
@@ -62,6 +61,7 @@ namespace Modulo2STR.Core.Services
         {
             var pacote = new
             {
+                Modulo = 1,
                 IED = IED,
                 Corrente = corrente,
                 data_hora = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")

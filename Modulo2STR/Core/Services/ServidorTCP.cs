@@ -31,7 +31,7 @@ namespace Modulo2STR.Core.Services
                 int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
 
                 string mensagemRecebida = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                Console.WriteLine($"Mensagem recebida: {mensagemRecebida}");
+                Console.WriteLine($"Mensagem capturada pelo Servidor TCP: {mensagemRecebida}");
 
                 client.Close();
             }

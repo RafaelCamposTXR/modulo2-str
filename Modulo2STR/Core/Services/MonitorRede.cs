@@ -54,7 +54,7 @@ namespace Modulo2STR.Core.Services
 
                     if (mensagemCorrente != null)
                     {
-                        Console.WriteLine("A mensagem em objeto é: ", mensagemCorrente);
+                        Console.WriteLine("Mensagem Capturada pelo monitor, referente ao ied: " +  mensagemCorrente.IED + " e valor de corrente: " + mensagemCorrente.Corrente);
                         gerenciadorIED.ReceberMensagem(mensagemCorrente);
                     }
                 }
