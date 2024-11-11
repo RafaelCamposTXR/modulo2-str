@@ -1,5 +1,6 @@
 using Modulo2STR.Core.Models;
 using Modulo2STR.Core.Services;
+using System.Threading.Tasks;
 
 class Program
 {
@@ -14,24 +15,36 @@ class Program
 
         Console.WriteLine("Servidor TCP rodando em segundo plano.");
 
-        
 
         GerenciadorIED gerenciador = new GerenciadorIED();
 
-        
-        string idIed = "IED12345";  
-        float corrente = 123.45f;  
 
+        Task monitorRedeTask = Task.Run(async () =>
+        {
+            MonitorRede monitor = new MonitorRede(gerenciador, 5000); // Porta 5000, mesma do ServidorTcp
+            await monitor.IniciarEscutaAsync();
+        });
+
+        Console.WriteLine("Monitor de Rede rodando em segundo plano.");
+
+
+        string idIed = "IED12345";
+        float corrente = 123.45f;
 
         var mensagem = new MensagemCorrente(idIed, corrente);
 
 
+        EnvioMensagem envioMensagem = new EnvioMensagem();
 
+
+        Console.WriteLine("Enviando mensagem com IED e corrente...");
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, idIed, corrente);
+
+        Console.WriteLine("Mensagem enviada.");
 
         Console.WriteLine("Monitoramento iniciado para todos os IEDs. Pressione qualquer tecla para simular alterações de corrente...");
         Console.ReadKey();
 
-        gerenciador.ReceberMensagem(mensagem);
 
         await SimularVariacoesDeCorrente(gerenciador);
 
@@ -41,15 +54,12 @@ class Program
 
         Console.WriteLine("Monitoramento encerrado.");
 
-        await servidorTask;
+        await Task.WhenAll(servidorTask, monitorRedeTask);
     }
 
     private static async Task SimularVariacoesDeCorrente(GerenciadorIED gerenciador)
     {
         gerenciador.AtualizarOuCriarIED("ied1", 5000);
         await Task.Delay(500);
-
     }
-
-
 }

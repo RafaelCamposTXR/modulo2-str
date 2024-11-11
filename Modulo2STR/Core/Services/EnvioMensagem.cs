@@ -56,5 +56,19 @@ namespace Modulo2STR.Core.Services
 
             await EnviarMensagemTcpAsync(ipDestino, porta, mensagem); 
         }
+
+        public async Task EnviarMensagemIedCorrenteAsync(string ipDestino, int porta, string IED, float corrente)
+        {
+            var pacote = new
+            {
+                IED = IED,
+                Corrente = corrente,
+                data_hora = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+            };
+
+            string mensagem = JsonConvert.SerializeObject(pacote);
+
+            await EnviarMensagemTcpAsync(ipDestino, porta, mensagem);
+        }
     }
 }
