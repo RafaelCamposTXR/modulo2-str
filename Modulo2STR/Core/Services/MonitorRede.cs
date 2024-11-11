@@ -54,6 +54,7 @@ namespace Modulo2STR.Core.Services
 
                     if (mensagemCorrente != null)
                     {
+                        Console.WriteLine("A mensagem em objeto é: ", mensagemCorrente);
                         gerenciadorIED.ReceberMensagem(mensagemCorrente);
                     }
                 }

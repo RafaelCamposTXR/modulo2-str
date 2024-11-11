@@ -8,14 +8,14 @@ namespace Modulo2STR.Core.Models
 {
     public class MensagemCorrente
     {
-        public string? Id { get; set; }    
+        public string IED { get; set; }    
         public float Corrente { get; set; } 
 
 
-        public MensagemCorrente(string? id, float corrente)
+        public MensagemCorrente(string ied, float corrente)
         {
 
-            Id = id;
+            IED = ied;
             Corrente = corrente;
         }
     }

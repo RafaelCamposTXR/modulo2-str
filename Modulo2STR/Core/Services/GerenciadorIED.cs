@@ -11,7 +11,7 @@ public class GerenciadorIED
     {
         if (dados != null)
         {
-            AtualizarOuCriarIED(dados.Id, dados.Corrente);
+            AtualizarOuCriarIED(dados.IED, dados.Corrente);
         }
     }
 

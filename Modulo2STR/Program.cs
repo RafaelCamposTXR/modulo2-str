@@ -60,7 +60,7 @@ class Program
             }
         }
 
-        // Parar o monitoramento e encerrar a aplicação
+        // Fim do programa
         Console.WriteLine("Encerrando monitoramento...");
         gerenciador.PararMonitoramento();
 
@@ -75,25 +75,27 @@ class Program
         EnvioMensagem envioMensagem = new EnvioMensagem();
 
         // Simulação de variações de corrente enviando diferentes mensagens
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 5000);
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied2", 5000);
         await Task.Delay(500);
 
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 200);
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 20);
         await Task.Delay(500);
 
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 300);
-        await Task.Delay(500);
+        //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 300);
+        //await Task.Delay(500);
 
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 2000);
-        await Task.Delay(500);
+        //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 2000);
+        //await Task.Delay(500);
 
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 3200);
-        await Task.Delay(500);
+        //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, "ied1", 3200);
+        //
+        //
+        //gerenciador.AtualizarOuCriarIED("ied1", 20);
+        //await Task.Delay(500);
     }
 
     private static async Task EnviarMensagemManual()
     {
-        // Coletar IED e corrente do usuário
         Console.Write("Insira o ID do IED: ");
         string idIed = Console.ReadLine();
 
@@ -102,9 +104,8 @@ class Program
         {
             EnvioMensagem envioMensagem = new EnvioMensagem();
 
-            // Enviar mensagem manual com os dados fornecidos
             await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, idIed, corrente);
-            Console.WriteLine($"Mensagem enviada: IED={idIed}, Corrente={corrente}");
+            //Console.WriteLine($"Mensagem enviada: IED={idIed}, Corrente={corrente}");
         }
         else
         {
