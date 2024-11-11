@@ -26,24 +26,57 @@ namespace Modulo2STR.Core.utils
             Console.ResetColor();
         }
 
-        private static void SetConsoleColor(string color)
+        private static void SetConsoleColor(string cor)
         {
-            switch (color.ToLower())
+            switch (cor.ToLower())
             {
-                case "amarelo":
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                case "preto":
+                    Console.ForegroundColor = ConsoleColor.Black;
                     break;
-                case "roxo":
+                case "azul escuro":
                     Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    break;
+                case "verde escuro":
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    break;
+                case "ciano escuro":
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    break;
+                case "vermelho escuro":
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    break;
+                case "magenta escuro":
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    break;
+                case "amarelo escuro":
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    break;
+                case "cinza":
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+                case "cinza escuro":
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    break;
+                case "azul":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "verde":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case "ciano":
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     break;
                 case "vermelho":
                     Console.ForegroundColor = ConsoleColor.Red;
                     break;
-                case "laranja":
-                    Console.ForegroundColor = ConsoleColor.DarkYellow; 
+                case "magenta":
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     break;
-                case "verde":
-                    Console.ForegroundColor = ConsoleColor.Green;
+                case "amarelo":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "branco":
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 default:
                     Console.ResetColor();

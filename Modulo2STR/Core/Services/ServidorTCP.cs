@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Modulo2STR.Core.utils;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -19,7 +20,7 @@ namespace Modulo2STR.Core.Services
         {
             TcpListener listener = new TcpListener(IPAddress.Any, _porta);
             listener.Start();
-            Console.WriteLine($"Servidor TCP escutando na porta {_porta}...");
+            ConsoleWrapper.WriteLine($"Servidor TCP escutando na porta {_porta}...", "ciano");
 
             while (true)
             {
@@ -32,7 +33,7 @@ namespace Modulo2STR.Core.Services
 
                 string mensagemRecebida = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-                Console.WriteLine($"Mensagem capturada pelo Servidor TCP: {mensagemRecebida}");
+                ConsoleWrapper.WriteLine($"Mensagem capturada pelo Servidor TCP: {mensagemRecebida}", "ciano");
 
                 client.Close();
             }

@@ -14,7 +14,7 @@ class Program
             await servidor.IniciarAsync();
         });
 
-        ConsoleWrapper.WriteLine("Servidor TCP rodando em segundo plano.", "DarkBlue");
+        ConsoleWrapper.WriteLine("Servidor TCP rodando em segundo plano.", "ciano");
 
         // Criar GerenciadorIED e iniciar monitoramento de rede
         GerenciadorIED gerenciador = new GerenciadorIED();
@@ -26,7 +26,7 @@ class Program
         });
 
 
-        Console.WriteLine("Monitor de Rede rodando em segundo plano.");
+        ConsoleWrapper.WriteLine("Monitor de Rede rodando em segundo plano.", "verde");
 
         // Executar o teste automático inicial
         Console.WriteLine("Executando teste de variação de corrente...");
