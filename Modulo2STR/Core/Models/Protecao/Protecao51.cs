@@ -1,3 +1,4 @@
+using Modulo2STR.Core.utils;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,10 +20,10 @@ public class Protecao51 : ProtecaoBase
     {
         if (correnteAtual > limiar51)
         {
-            Console.WriteLine("Fazendo os cálculos de temporização.");
+            ConsoleWrapper.WriteLine("Fazendo os cálculos de temporização.", "vermelho");
 
             tempoAtrasoAtual = CalcularTempoAtraso(correnteAtual);
-            Console.WriteLine($"tempo atraso atual: {tempoAtrasoAtual}");
+            ConsoleWrapper.WriteLine($"tempo atraso atual: {tempoAtrasoAtual}", "vermelho");
 
             if (cancellationTokenSource == null)
             {
@@ -46,7 +47,7 @@ public class Protecao51 : ProtecaoBase
 
     private void IniciarTemporizador(float correnteAtual)
     {
-        Console.WriteLine("\nTemporizador iniciado.");
+        ConsoleWrapper.WriteLine("\nTemporizador iniciado.", "vermelho");
         cancellationTokenSource = new CancellationTokenSource();
         CancellationToken token = cancellationTokenSource.Token;
         inicioTemporizador = DateTime.Now;
