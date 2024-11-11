@@ -18,14 +18,11 @@ public abstract class ProtecaoBase
     }
 
 
-    public abstract bool verificarSobrecorrente(float correnteAtual);
+    public abstract Task<bool> verificarSobrecorrente(float correnteAtual);
 
 
     public void EmitirAlerta()
     {
-        // aqui era pra ser o começo de gerar pacote broadcast:
-        //var mensagem = new MensagemBroadcast(IED, limiar.Value, "Sobrecorrente Instantânea");
-        //gerenciaAlerta.EnviarAlerta(mensagem);
         ConsoleWrapper.WriteLine($"\nAnomalia: Sobrecorrente detectada no IED: {IED}.", "vermelho");
     }
 }

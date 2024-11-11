@@ -16,22 +16,21 @@ public class Protecao51 : ProtecaoBase
     {
     }
 
-    public override bool verificarSobrecorrente(float correnteAtual)
+    public override async Task<bool> verificarSobrecorrente(float correnteAtual)
     {
         if (correnteAtual > limiar51)
         {
-            ConsoleWrapper.WriteLine("Fazendo os cálculos de temporização.", "vermelho");
+            ConsoleWrapper.WriteLine("\nFazendo os cálculos de temporização.", "vermelho");
 
             tempoAtrasoAtual = CalcularTempoAtraso(correnteAtual);
             ConsoleWrapper.WriteLine($"tempo atraso atual: {tempoAtrasoAtual}", "vermelho");
 
             if (cancellationTokenSource == null)
             {
-                IniciarTemporizador(correnteAtual);
+                return await IniciarTemporizador(correnteAtual);
             }
 
-            EmitirAlerta();
-            return true;
+            return false;
         }
         else
         {
@@ -45,36 +44,35 @@ public class Protecao51 : ProtecaoBase
         return K / (float)(Math.Pow(correnteAtual / limiar51.Value, Alpha) - 1);
     }
 
-    private void IniciarTemporizador(float correnteAtual)
+    private async Task<bool> IniciarTemporizador(float correnteAtual)
     {
         ConsoleWrapper.WriteLine("\nTemporizador iniciado.", "vermelho");
         cancellationTokenSource = new CancellationTokenSource();
         CancellationToken token = cancellationTokenSource.Token;
         inicioTemporizador = DateTime.Now;
 
-        _ = Task.Run(async () =>
+        try
         {
-            try
+            while (!token.IsCancellationRequested)
             {
-                while (!token.IsCancellationRequested)
+                float tempoDecorrido = (float)(DateTime.Now - inicioTemporizador).TotalSeconds;
+                ConsoleWrapper.WriteLine($"tempo decorrido: {tempoDecorrido}", "vermelho");
+
+                if (tempoDecorrido >= tempoAtrasoAtual)
                 {
-                    float tempoDecorrido = (float)(DateTime.Now - inicioTemporizador).TotalSeconds;
-                    //Console.WriteLine($"tempo decorrido: {tempoDecorrido}");
-
-                    if (tempoDecorrido >= tempoAtrasoAtual)
-                    {
-                        EmitirAlerta();
-                        break;
-                    }
-
-                    await Task.Delay(50, token);
+                    EmitirAlerta();
+                    return true;
                 }
+
+                await Task.Delay(50, token);
             }
-            catch (TaskCanceledException)
-            {
-                
-            }
-        }, token);
+        }
+        catch (TaskCanceledException)
+        {
+            return false;
+        }
+
+        return false;
     }
 
     public void CancelarTemporizador()

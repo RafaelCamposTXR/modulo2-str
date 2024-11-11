@@ -54,7 +54,7 @@ namespace Modulo2STR.Core.Services
 
                     if (mensagemCorrente != null)
                     {
-                        ConsoleWrapper.WriteLine("Mensagem Capturada pelo monitor, referente ao ied: " +  mensagemCorrente.IED + " e valor de corrente: " + mensagemCorrente.Corrente, "verde");
+                        ConsoleWrapper.WriteLine("\n\n\n-- Mensagem Capturada pelo monitor, referente ao ied: " +  mensagemCorrente.IED + " e valor de corrente: " + mensagemCorrente.Corrente, "verde");
                         gerenciadorIED.ReceberMensagem(mensagemCorrente);
                     }
                 }

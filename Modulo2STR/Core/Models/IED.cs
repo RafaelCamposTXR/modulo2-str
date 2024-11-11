@@ -34,7 +34,7 @@ public class IED
             {
                 corrente = value;
                 UltimaAtualizacao = DateTime.Now;
-                Console.WriteLine($"\n\nCorrente do IED {Id} atualizada para {corrente} A");
+                Console.WriteLine($"Corrente do IED {Id} atualizada para {corrente} A");
                 VerificarProtecoes();
             }
         }
@@ -70,13 +70,14 @@ public class IED
 
         var envioMensagem = new EnvioMensagem(); 
 
-        if (protecao50.verificarSobrecorrente(corrente))
+        if (await protecao50.verificarSobrecorrente(corrente))
         {
             await envioMensagem.EnviarPacoteDeteccaoCurtoAsync("127.0.0.1", 5000, Id, corrente);
+            protecao51.CancelarTemporizador();
             return "Proteção 50 identificou anomalia.";
         }
 
-        if (protecao51.verificarSobrecorrente(corrente))
+        if (await protecao51.verificarSobrecorrente(corrente))
         {
             await envioMensagem.EnviarPacoteDeteccaoCurtoAsync("127.0.0.1", 5000, Id, corrente);
             return "Proteção 51 identificou anomalia.";

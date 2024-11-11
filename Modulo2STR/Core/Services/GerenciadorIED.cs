@@ -20,7 +20,7 @@ public class GerenciadorIED
         if (iedLista.ContainsKey(id))
         {
             iedLista[id].Corrente = novaCorrente;
-            Console.WriteLine($"Corrente atualizada para o IED {id}");
+            //Console.WriteLine($"Corrente atualizada para o IED {id}");
         }
         else
         {
@@ -28,6 +28,7 @@ public class GerenciadorIED
             novoIed.Corrente = novaCorrente;
             novoIed.IniciarThread();
             iedLista[id] = novoIed;
+            //Console.WriteLine($"Corrente inicializada para o IED {id}");
         }
     }
 

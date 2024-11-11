@@ -88,9 +88,52 @@ class Program
         await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 300);
         await Task.Delay(500);
 
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 2000);
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
         await Task.Delay(500);
 
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied2", 90);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied2", 110);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 400);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 450);
+        await Task.Delay(500);
+
+
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 490);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 495);
+        await Task.Delay(500);
+
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 90);
+        await Task.Delay(500);
     }
 
     private static async Task EnviarMensagemManual()

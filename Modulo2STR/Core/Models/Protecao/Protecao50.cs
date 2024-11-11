@@ -5,16 +5,16 @@ public class Protecao50 : ProtecaoBase
     {
     }
 
-    public override bool verificarSobrecorrente(float corrente)
+    public override Task<bool> verificarSobrecorrente(float corrente)
     {
         if (corrente > limiar50)
         {
             EmitirAlerta();
-            return true;
+            return Task.FromResult(true);
         }
         else
         {
-            return false;
+            return Task.FromResult(false);
         }
     }
 }
