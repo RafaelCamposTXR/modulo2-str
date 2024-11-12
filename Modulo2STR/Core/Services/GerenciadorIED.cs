@@ -19,16 +19,18 @@ public class GerenciadorIED
     {
         if (iedLista.ContainsKey(id))
         {
+            Console.WriteLine($"IED {id} identificado na lista de IEDs existentes");
             iedLista[id].Corrente = novaCorrente;
-            //Console.WriteLine($"Corrente atualizada para o IED {id}");
+            
         }
         else
         {
+            Console.WriteLine($"IED {id} adicionado à lista de IEDs monitorados");
             var novoIed = new IED(id);
             novoIed.Corrente = novaCorrente;
             novoIed.IniciarThread();
             iedLista[id] = novoIed;
-            //Console.WriteLine($"Corrente inicializada para o IED {id}");
+            
         }
     }
 
@@ -63,6 +65,6 @@ public class GerenciadorIED
         }
 
         iedLista.Clear(); 
-        Console.WriteLine("Monitoramento de todos os IEDs foi parado.");
+        Console.WriteLine("O monitoramento de todos os IEDs foi encerrado.");
     }
 }

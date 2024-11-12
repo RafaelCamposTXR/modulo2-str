@@ -25,6 +25,7 @@ class Program
             await monitor.IniciarEscutaAsync();
         });
 
+        EnvioMensagem envioMensagem = new EnvioMensagem();
 
         ConsoleWrapper.WriteLine("Monitor de Rede rodando em segundo plano, aguardando por pacotes do módulo 1.", "verde");
 
@@ -39,7 +40,7 @@ class Program
         {
             ConsoleWrapper.WriteLine("\nMenu de Opções:", "magenta");
             ConsoleWrapper.WriteLine("1. Enviar mensagem de teste manualmente", "magenta");
-            ConsoleWrapper.WriteLine("2. Fechar aplicação", "magenta");
+            ConsoleWrapper.WriteLine("2. Encerrar monitoramento", "magenta");
 
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();
@@ -48,7 +49,7 @@ class Program
             {
                 case "1":
 
-                    await EnviarMensagemManual();
+                    await EnviarMensagemManual(envioMensagem, gerenciador);
                     break;
 
                 case "2":
@@ -68,8 +69,7 @@ class Program
         gerenciador.PararMonitoramento();
 
 
-        Console.WriteLine("Monitoramento encerrado. Pressione qualquer tecla para finalizar.");
-        Console.ReadKey();
+        Console.WriteLine("Monitoramento encerrado. A aplicação pode ser encerrada.");
 
         await Task.WhenAll(servidorTask, monitorRedeTask);
     }
@@ -91,28 +91,10 @@ class Program
         await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
         await Task.Delay(500);
 
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
-        await Task.Delay(500);
-
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
-        await Task.Delay(500);
-
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
-        await Task.Delay(500);
-
         await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied2", 90);
         await Task.Delay(500);
 
         await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied2", 489);
-        await Task.Delay(500);
-
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
-        await Task.Delay(500);
-
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
-        await Task.Delay(500);
-
-        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
         await Task.Delay(500);
 
         await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 350);
@@ -124,8 +106,6 @@ class Program
         await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 450);
         await Task.Delay(500);
 
-
-
         await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, "ied1", 490);
         await Task.Delay(500);
 
@@ -136,7 +116,7 @@ class Program
         await Task.Delay(500);
     }
 
-    private static async Task EnviarMensagemManual()
+    private static async Task EnviarMensagemManual(EnvioMensagem envioMensagem, GerenciadorIED gerenciador)
     {
 
         Console.Write("Insira o ID do IED: ");
@@ -146,11 +126,9 @@ class Program
         Console.Write("Insira o valor de corrente (float): ");
         if (float.TryParse(Console.ReadLine(), out float corrente))
         {
-            EnvioMensagem envioMensagem = new EnvioMensagem();
-            GerenciadorIED gerenciador = new GerenciadorIED();
 
-            //await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 5000, idIed, corrente);
-            gerenciador.AtualizarOuCriarIED(idIed, corrente);
+            await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, idIed, corrente);
+            //gerenciador.AtualizarOuCriarIED(idIed, corrente);
             //Console.WriteLine($"Mensagem enviada: IED={idIed}, Corrente={corrente}");
         }
         else

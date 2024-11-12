@@ -33,7 +33,7 @@ namespace Modulo2STR.Core.Services
 
                 string mensagemRecebida = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-                ConsoleWrapper.WriteLine($"Mensagem capturada pelo Servidor TCP: {mensagemRecebida}", "ciano");
+                ConsoleWrapper.WriteLine($"-- Alerta capturado pelo Servidor TCP: {mensagemRecebida}", "ciano");
 
                 client.Close();
             }
