@@ -36,7 +36,7 @@ public class IED
             {
                 corrente = value;
                 UltimaAtualizacao = DateTime.Now;
-                Console.WriteLine($"Corrente do IED {Id} atualizada para {corrente} A");
+                Console.WriteLine($"Corrente do IED ({Id}) atualizada para {corrente} A");
                 //VerificarProtecoes(stopIED);
             }
         }

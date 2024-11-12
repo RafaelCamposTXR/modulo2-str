@@ -56,29 +56,40 @@ class Program
             switch (opcao)
             {
                 case "send":
-                case "send internal":
-                    if (parts.Length < 3)
+                    if (parts[1] == "internal")
                     {
-                        Console.WriteLine("Comando inválido. Formato: send [ied] [corrente]");
-                        break;
-                    }
+                        if (parts.Length < 4)
+                        {
+                            Console.WriteLine("Comando inválido. Formato: send [ied] [corrente]");
+                            break;
+                        }
 
-                    string ied = parts[1];
-                    if (!float.TryParse(parts[^1], out float corrente))
-                    {
-                        Console.WriteLine("Corrente inválida. Deve ser um número decimal.");
+                        string ied = parts[2];
+                        if (!float.TryParse(parts[^1], out float corrente))
+                        {
+                            Console.WriteLine("Corrente inválida. Deve ser um número decimal.");
+                            break;
+                        }
+                        await EnviarMensagemManualInterna(envioMensagem, ied, corrente, gerenciador);
                         break;
-                    }
-
-                    if (opcao == "send")
-                    {
-                        await EnviarMensagemManual(envioMensagem, ied, corrente, gerenciador);
                     }
                     else
                     {
-                        await EnviarMensagemManualInterna(envioMensagem, ied, corrente, gerenciador);
+                        if (parts.Length < 3)
+                        {
+                            Console.WriteLine("Comando inválido. Formato: send [ied] [corrente]");
+                            break;
+                        }
+
+                        string ied = parts[1];
+                        if (!float.TryParse(parts[^1], out float corrente))
+                        {
+                            Console.WriteLine("Corrente inválida. Deve ser um número decimal.");
+                            break;
+                        }
+                        await EnviarMensagemManual(envioMensagem, ied, corrente, gerenciador);
+                        break;
                     }
-                    break;
 
                 case "list":
                     Console.WriteLine("Os IEDs registrados atualmente são: ");

@@ -111,7 +111,7 @@ public class GerenciadorIED
 
         foreach (var ied in iedLista.Values)
         {
-            nomesIeds.Add($"IED: {ied.Id}");
+            nomesIeds.Add($"({ied.Id}) :  {ied.UltimaAtualizacao}");
         }
 
         return string.Join("\n", nomesIeds);
