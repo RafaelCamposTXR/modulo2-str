@@ -8,7 +8,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        //servidor TCP em segundo plano
+
         Task servidorTask = Task.Run(async () =>
         {
             ServidorTcp servidor = new ServidorTcp(5000);
@@ -17,12 +17,12 @@ class Program
 
         ConsoleWrapper.WriteLine("Servidor TCP rodando em segundo plano, simulando comportamento dos módulos 6 e 3.", "ciano");
 
-        // Criar GerenciadorIED e iniciar monitoramento de rede
+
         GerenciadorIED gerenciador = new GerenciadorIED();
 
         Task monitorRedeTask = Task.Run(async () =>
         {
-            MonitorRede monitor = new MonitorRede(gerenciador, 4000); // Porta 5000, mesma do ServidorTcp
+            MonitorRede monitor = new MonitorRede(gerenciador, 4000); 
             await monitor.IniciarEscutaAsync();
         });
 
@@ -35,46 +35,82 @@ class Program
         await SimularVariacoesDeCorrente(gerenciador);
         Console.WriteLine("Teste concluído.");
 
-        // Exibir menu de opções ao usuário
+
         bool continuar = true;
+        ConsoleWrapper.WriteLine(
+                            "\nMenu de Opções:\n" +
+                            "send [ied] [corrente] - Enviar mensagem simulando pacote do módulo 1\n" +
+                            "send internal [ied] [corrente] - Enviar mensagem internamente\n" +
+                            "list - Visualizar IEDs registrados\n" +
+                            "inativ - Alternar Monitoramento de inatividade \n" +
+                            "close - Encerrar monitoramento do sistema\n" +
+                            "menu - Visualizar menu de opções novamente", "magenta"
+                    );
+
         while (continuar)
         {
-            ConsoleWrapper.WriteLine("\nMenu de Opções:", "magenta");
-            ConsoleWrapper.WriteLine("1. Enviar mensagem simulando pacote do módulo 1", "magenta");
-            ConsoleWrapper.WriteLine("2. Enviar mensagem internamente", "magenta");
-            ConsoleWrapper.WriteLine("3. Visualizar IEDs registrados", "magenta");
-            ConsoleWrapper.WriteLine("4. Desligar Monitoramento de inatividade", "magenta");
-            ConsoleWrapper.WriteLine("5. Encerrar monitoramento do sistema", "magenta");
-            
-
-            string opcao = Console.ReadLine();
+            string input = Console.ReadLine();
+            string[] parts = input.Split(' ');
+            string opcao = parts[0];
 
             switch (opcao)
             {
-                case "1":
+                case "send":
+                case "send internal":
+                    if (parts.Length < 3)
+                    {
+                        Console.WriteLine("Comando inválido. Formato: send [ied] [corrente]");
+                        break;
+                    }
 
-                    await EnviarMensagemManual(envioMensagem, gerenciador);
+                    string ied = parts[1];
+                    if (!float.TryParse(parts[^1], out float corrente))
+                    {
+                        Console.WriteLine("Corrente inválida. Deve ser um número decimal.");
+                        break;
+                    }
+
+                    if (opcao == "send")
+                    {
+                        await EnviarMensagemManual(envioMensagem, ied, corrente, gerenciador);
+                    }
+                    else
+                    {
+                        await EnviarMensagemManualInterna(envioMensagem, ied, corrente, gerenciador);
+                    }
                     break;
 
-                case "2":
-                    await EnviarMensagemManualInterna(envioMensagem, gerenciador);
-                    break;
-                case "3":
+                case "list":
                     Console.WriteLine("Os IEDs registrados atualmente são: ");
                     Console.WriteLine(gerenciador.ObterNomesIEDsFormatados());
                     break;
-                case "4":
+
+                case "inativ":
                     gerenciador.monitorarInatividade = !gerenciador.monitorarInatividade;
                     break;
-                case "5":
+
+                case "close":
                     continuar = false;
+                    break;
+
+                case "menu":
+                    ConsoleWrapper.WriteLine(
+                            "\nMenu de Opções:\n" +
+                            "send [ied] [corrente] - Enviar mensagem simulando pacote do módulo 1\n" +
+                            "send internal [ied] [corrente] - Enviar mensagem internamente\n" +
+                            "list - Visualizar IEDs registrados\n" +
+                            "inativ - Alternar Monitoramento de inatividade \n" +
+                            "close - Encerrar monitoramento do sistema\n" +
+                            "menu - Visualizar menu de opções novamente", "magenta"
+                    );
                     break;
 
                 default:
                     Console.WriteLine("Opção inválida. Tente novamente.");
                     break;
             }
-            await Task.Delay(2000);
+
+            await Task.Delay(100);
         }
 
         // Fim do programa
@@ -130,43 +166,16 @@ class Program
         await Task.Delay(500);
     }
 
-    private static async Task EnviarMensagemManual(EnvioMensagem envioMensagem, GerenciadorIED gerenciador)
+    private static async Task EnviarMensagemManual(EnvioMensagem envioMensagem, String idIed, float corrente, GerenciadorIED gerenciador)
     {
 
-        Console.Write("Insira o ID do IED: ");
-        string idIed = Console.ReadLine();
-
-
-        Console.Write("Insira o valor de corrente (float): ");
-        if (float.TryParse(Console.ReadLine(), out float corrente))
-        {
-
-            await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, idIed, corrente);
-        }
-        else
-        {
-
-            Console.WriteLine("Valor de corrente inválido. Tente novamente.");
-        }
+        await envioMensagem.EnviarMensagemIedCorrenteAsync("127.0.0.1", 4000, idIed, corrente);
     }
 
-    private static async Task EnviarMensagemManualInterna(EnvioMensagem envioMensagem, GerenciadorIED gerenciador)
+    private static async Task EnviarMensagemManualInterna(EnvioMensagem envioMensagem, String idIed, float corrente, GerenciadorIED gerenciador)
     {
 
-        Console.Write("Insira o ID do IED: ");
-        string idIed = Console.ReadLine();
-
-
-        Console.Write("Insira o valor de corrente (float): ");
-        if (float.TryParse(Console.ReadLine(), out float corrente))
-        {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            await gerenciador.AtualizarOuCriarIED(idIed, corrente, stopwatch);
-        }
-        else
-        {
-
-            Console.WriteLine("Valor de corrente inválido. Tente novamente.");
-        }
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        await gerenciador.AtualizarOuCriarIED(idIed, corrente, stopwatch);
     }
 }
