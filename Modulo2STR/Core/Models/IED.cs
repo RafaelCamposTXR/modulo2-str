@@ -1,6 +1,7 @@
 using Modulo2STR.Core.Services;
 using Modulo2STR.Core.utils;
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 public class IED
@@ -11,7 +12,8 @@ public class IED
     private readonly Protecao51 protecao51;
     private Thread? monitorThread;
     private bool monitorando = true;
-    public DateTime UltimaAtualizacao { get; private set; }
+    public DateTime UltimaAtualizacao { get;set; }
+    public Stopwatch stopIED { get; set; }
 
 
 
@@ -35,7 +37,7 @@ public class IED
                 corrente = value;
                 UltimaAtualizacao = DateTime.Now;
                 Console.WriteLine($"Corrente do IED {Id} atualizada para {corrente} A");
-                VerificarProtecoes();
+                //VerificarProtecoes(stopIED);
             }
         }
     }
@@ -64,7 +66,7 @@ public class IED
         }
     }
 
-    private async Task<string?> VerificarProtecoes()
+    public async Task<string?> VerificarProtecoes(Stopwatch stopIED)
     {
         Console.WriteLine($"IED {Id}: Verificando condição de circuito em corrente = {corrente} A");
 
@@ -72,14 +74,16 @@ public class IED
 
         if (await protecao50.verificarSobrecorrente(corrente))
         {
-            await envioMensagem.EnviarPacoteDeteccaoCurtoAsync("127.0.0.1", 5000, Id, corrente);
+            stopIED.Stop();
+            await envioMensagem.EnviarPacoteDeteccaoCurtoAsync("127.0.0.1", 5000, Id, corrente, stopIED.ElapsedMilliseconds);
             protecao51.CancelarTemporizador();
+
             return "Proteção 50 identificou anomalia.";
         }
 
         if (await protecao51.verificarSobrecorrente(corrente))
         {
-            await envioMensagem.EnviarPacoteDeteccaoCurtoAsync("127.0.0.1", 5000, Id, corrente);
+            await envioMensagem.EnviarPacoteDeteccaoCurtoAsync("127.0.0.1", 5000, Id, corrente, stopIED.ElapsedMilliseconds);
             return "Proteção 51 identificou anomalia.";
         }
 

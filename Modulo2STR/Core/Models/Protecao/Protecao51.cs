@@ -20,10 +20,10 @@ public class Protecao51 : ProtecaoBase
     {
         if (correnteAtual > limiar51)
         {
-            ConsoleWrapper.WriteLine("\nFazendo os cálculos de temporização.", "vermelho");
+            ConsoleWrapper.WriteLine($"\n({IED}) Proteção 51: Calculando temporização.", "vermelho");
 
             tempoAtrasoAtual = CalcularTempoAtraso(correnteAtual);
-            ConsoleWrapper.WriteLine($"tempo atraso atual: {tempoAtrasoAtual}", "vermelho");
+            ConsoleWrapper.WriteLine($"({IED}) Proteção 51: Tempo de atraso atual: {tempoAtrasoAtual}s", "vermelho");
 
             if (cancellationTokenSource == null)
             {
@@ -46,7 +46,7 @@ public class Protecao51 : ProtecaoBase
 
     private async Task<bool> IniciarTemporizador(float correnteAtual)
     {
-        ConsoleWrapper.WriteLine("\nTemporizador iniciado.", "vermelho");
+        ConsoleWrapper.WriteLine($"\n({IED}) Proteção 51: Temporizador iniciado.", "vermelho");
         cancellationTokenSource = new CancellationTokenSource();
         CancellationToken token = cancellationTokenSource.Token;
         inicioTemporizador = DateTime.Now;
@@ -60,11 +60,12 @@ public class Protecao51 : ProtecaoBase
 
                 if (tempoDecorrido >= tempoAtrasoAtual)
                 {
-                    EmitirAlerta();
+                    ConsoleWrapper.WriteLine($"({IED}) Proteção 51: Tempo decorrido pela função de temporização: {(int)(tempoDecorrido *1000)}ms", "vermelho");
+                    EmitirAlerta("Proteção 51");
                     return true;
                 }
 
-                await Task.Delay(50, token);
+                await Task.Delay(5, token);
             }
         }
         catch (TaskCanceledException)

@@ -21,8 +21,8 @@ public abstract class ProtecaoBase
     public abstract Task<bool> verificarSobrecorrente(float correnteAtual);
 
 
-    public void EmitirAlerta()
+    public void EmitirAlerta(string Protecao)
     {
-        ConsoleWrapper.WriteLine($"\nAnomalia: Sobrecorrente detectada no IED: {IED}.", "vermelho");
+        ConsoleWrapper.WriteLine($"\nAnomalia em {Protecao}: Sobrecorrente detectada no IED: {IED}.", "vermelho");
     }
 }

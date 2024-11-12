@@ -41,13 +41,14 @@ namespace Modulo2STR.Core.Services
             }
         }
 
-        public async Task EnviarPacoteDeteccaoCurtoAsync(string ipDestino, int porta, string IED, float corrente)
+        public async Task EnviarPacoteDeteccaoCurtoAsync(string ipDestino, int porta, string IED, float corrente, long time )
         {
             var pacote = new
             {
                 modulo = 2,
                 IED = IED,
                 Corrente = corrente,
+                tempo_processamento = $"{time}ms",
                 data_hora = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
             };
 

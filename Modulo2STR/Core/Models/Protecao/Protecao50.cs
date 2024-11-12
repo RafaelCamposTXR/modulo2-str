@@ -9,7 +9,7 @@ public class Protecao50 : ProtecaoBase
     {
         if (corrente > limiar50)
         {
-            EmitirAlerta();
+            EmitirAlerta("Proteção 50");
             return Task.FromResult(true);
         }
         else

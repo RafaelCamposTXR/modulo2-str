@@ -14,6 +14,7 @@ namespace Modulo2STR.Core.Services
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using System.Diagnostics;
 
     public class MonitorRede
     {
@@ -54,8 +55,9 @@ namespace Modulo2STR.Core.Services
 
                     if (mensagemCorrente != null)
                     {
-                        ConsoleWrapper.WriteLine("\n\n\n-- Mensagem Capturada pelo monitor, referente ao ied: " +  mensagemCorrente.IED + " e valor de corrente: " + mensagemCorrente.Corrente, "verde");
-                        gerenciadorIED.ReceberMensagem(mensagemCorrente);
+                        ConsoleWrapper.WriteLine("\n\n-- Mensagem Capturada pelo monitor, referente ao IED: (" +  mensagemCorrente.IED + ") e valor de corrente: " + mensagemCorrente.Corrente, "verde");
+                        Stopwatch stopwatch = Stopwatch.StartNew();
+                        await gerenciadorIED.ReceberMensagem(mensagemCorrente, stopwatch);
                     }
                 }
             }
