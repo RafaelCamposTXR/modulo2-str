@@ -1,4 +1,5 @@
 using Modulo2STR.Core.Models;
+using Modulo2STR.Core.Services;
 using Modulo2STR.Core.utils;
 using System;
 using System.Collections.Generic;
@@ -65,8 +66,9 @@ public class GerenciadorIED
         }).Start();
     }
 
-    public void VerificarInatividade()
+    public async Task VerificarInatividade()
     {
+        var envioMensagem = new EnvioMensagem();
         var iedsParaRemover = new List<string>();
 
         foreach (var ied in iedLista.Values)
@@ -76,6 +78,7 @@ public class GerenciadorIED
             if (tempoInatividade > tempoAvisoInatividade && tempoInatividade < tempoDesligarInatividade)
             {
                 ConsoleWrapper.WriteLine($"[AVISO] IED ({ied.Id}) inativo por mais de 1 minuto.", "amarelo");
+                await envioMensagem.EnviarAvisoInatividadeAsync("127.0.0.1", 5000, ied.Id);
             }
             else if (tempoInatividade >= tempoDesligarInatividade)
             {

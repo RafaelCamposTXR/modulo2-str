@@ -23,6 +23,6 @@ public abstract class ProtecaoBase
 
     public void EmitirAlerta(string Protecao)
     {
-        ConsoleWrapper.WriteLine($"\nAnomalia em {Protecao}: Sobrecorrente detectada no IED: {IED}.", "vermelho");
+        ConsoleWrapper.WriteLine($"\n({IED}) {Protecao}: limiar ultrapassado. Sobrecorrente detectada e enviada para módulo de comunicação.", "vermelho");
     }
 }

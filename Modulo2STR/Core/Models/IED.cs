@@ -37,7 +37,6 @@ public class IED
                 corrente = value;
                 UltimaAtualizacao = DateTime.Now;
                 Console.WriteLine($"Corrente do IED ({Id}) atualizada para {corrente} A");
-                //VerificarProtecoes(stopIED);
             }
         }
     }
@@ -48,8 +47,7 @@ public class IED
         {
             while (monitorando)
             {
-                Thread.Sleep(1000); 
-                //VerificarProtecoes();
+                //Thread.Sleep(100); 
             }
         });
         monitorando = true;
@@ -62,7 +60,7 @@ public class IED
         if (monitorThread != null && monitorThread.IsAlive)
         {
             monitorThread.Join();
-            Console.WriteLine($"Monitoramento do IED {Id} foi desligado.");
+            ConsoleWrapper.WriteLine($"Monitoramento do IED {Id} foi desligado.", "amarelo");
         }
     }
 

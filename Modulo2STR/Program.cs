@@ -42,9 +42,9 @@ class Program
                             "send [ied] [corrente] - Enviar mensagem simulando pacote do módulo 1\n" +
                             "send internal [ied] [corrente] - Enviar mensagem internamente\n" +
                             "list - Visualizar IEDs registrados\n" +
-                            "inativ - Alternar Monitoramento de inatividade \n" +
+                            "inativ on/off - Alternar Monitoramento de inatividade \n" +
                             "close - Encerrar monitoramento do sistema\n" +
-                            "menu - Visualizar menu de opções novamente", "magenta"
+                            "menu - Visualizar menu de opções novamente\n", "magenta"
                     );
 
         while (continuar)
@@ -92,12 +92,24 @@ class Program
                     }
 
                 case "list":
-                    Console.WriteLine("Os IEDs registrados atualmente são: ");
+                    Console.WriteLine("(IED) : Última Atualização ");
                     Console.WriteLine(gerenciador.ObterNomesIEDsFormatados());
                     break;
 
                 case "inativ":
-                    gerenciador.monitorarInatividade = !gerenciador.monitorarInatividade;
+                    if (parts[1] == "on")
+                    {
+                        gerenciador.monitorarInatividade = true;
+                        Console.WriteLine("Monitor de inatividade ligado. Varreduras são feitas a cada 30 segundos.");
+                    }
+                    else if(parts[1] == "off"){
+                        gerenciador.monitorarInatividade=false;
+                        Console.WriteLine("Monitor de inatividade desligado.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Selecione o estado que deseja para o monitor de inatividade.");
+                    }
                     break;
 
                 case "close":
@@ -110,7 +122,7 @@ class Program
                             "send [ied] [corrente] - Enviar mensagem simulando pacote do módulo 1\n" +
                             "send internal [ied] [corrente] - Enviar mensagem internamente\n" +
                             "list - Visualizar IEDs registrados\n" +
-                            "inativ - Alternar Monitoramento de inatividade \n" +
+                            "inativ on/off - Alternar Monitoramento de inatividade \n" +
                             "close - Encerrar monitoramento do sistema\n" +
                             "menu - Visualizar menu de opções novamente", "magenta"
                     );

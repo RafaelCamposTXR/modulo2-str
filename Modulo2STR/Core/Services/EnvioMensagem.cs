@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;  
+using Newtonsoft.Json;
 
 namespace Modulo2STR.Core.Services
 {
@@ -41,11 +41,12 @@ namespace Modulo2STR.Core.Services
             }
         }
 
-        public async Task EnviarPacoteDeteccaoCurtoAsync(string ipDestino, int porta, string IED, float corrente, long time )
+        public async Task EnviarPacoteDeteccaoCurtoAsync(string ipDestino, int porta, string IED, float corrente, long time)
         {
             var pacote = new
             {
                 modulo = 2,
+                evento = "Curto-circuito",
                 IED = IED,
                 Corrente = corrente,
                 tempo_processamento = $"{time}ms",
@@ -54,8 +55,7 @@ namespace Modulo2STR.Core.Services
 
             string mensagem = JsonConvert.SerializeObject(pacote);
 
-
-            await EnviarMensagemTcpAsync(ipDestino, porta, mensagem); 
+            await EnviarMensagemTcpAsync(ipDestino, porta, mensagem);
         }
 
         public async Task EnviarMensagemIedCorrenteAsync(string ipDestino, int porta, string IED, float corrente)
@@ -65,6 +65,21 @@ namespace Modulo2STR.Core.Services
                 Modulo = 1,
                 IED = IED,
                 Corrente = corrente,
+                data_hora = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
+            };
+
+            string mensagem = JsonConvert.SerializeObject(pacote);
+
+            await EnviarMensagemTcpAsync(ipDestino, porta, mensagem);
+        }
+
+        public async Task EnviarAvisoInatividadeAsync(string ipDestino, int porta, string IED)
+        {
+            var pacote = new
+            {
+                modulo = 2,
+                evento = "Inatividade",
+                IED = IED,
                 data_hora = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")
             };
 
