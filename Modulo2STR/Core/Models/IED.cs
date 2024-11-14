@@ -47,7 +47,7 @@ public class IED
         {
             while (monitorando)
             {
-                //Thread.Sleep(100); 
+                //caso seja necessároio adicionar algum comportamento ou rotina na thread de IED
             }
         });
         monitorando = true;

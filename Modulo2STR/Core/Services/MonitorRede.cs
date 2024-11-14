@@ -51,19 +51,29 @@ namespace Modulo2STR.Core.Services
                     int bytesLidos = await stream.ReadAsync(buffer, 0, buffer.Length);
                     string mensagemJson = Encoding.UTF8.GetString(buffer, 0, bytesLidos);
 
-                    var mensagemCorrente = JsonSerializer.Deserialize<MensagemCorrente>(mensagemJson);
 
-                    if (mensagemCorrente != null)
+                    var jsonDocument = JsonDocument.Parse(mensagemJson);
+                    int modulo = jsonDocument.RootElement.GetProperty("modulo").GetInt32();
+
+                    if (modulo == 1) 
                     {
-                        ConsoleWrapper.WriteLine("\n\n-- Mensagem Capturada pelo monitor, referente ao IED: (" +  mensagemCorrente.IED + ") e valor de corrente: " + mensagemCorrente.Corrente, "verde");
-                        Stopwatch stopwatch = Stopwatch.StartNew();
-                        await gerenciadorIED.ReceberMensagem(mensagemCorrente, stopwatch);
+                        var mensagemCorrente = JsonSerializer.Deserialize<MensagemCorrente>(mensagemJson);
+                        if (mensagemCorrente != null)
+                        {
+                            ConsoleWrapper.WriteLine("\n\n-- Mensagem Capturada pelo monitor, referente ao IED: (" + mensagemCorrente.IED + ") e valor de corrente: " + mensagemCorrente.Corrente, "verde");
+                            Stopwatch stopwatch = Stopwatch.StartNew();
+                            await gerenciadorIED.ReceberMensagem(mensagemCorrente, stopwatch);
+                        }
+                    }
+                    else
+                    {
+                        ConsoleWrapper.WriteLine("Mensagem descartada: módulo diferente de 1.", "amarelo");
                     }
                 }
             }
             catch (Exception ex)
             {
-                ConsoleWrapper.WriteLine($"Erro ao processar cliente: {ex.Message}", "verde");
+                ConsoleWrapper.WriteLine($"Erro ao processar cliente: {ex.Message}", "vermelho");
             }
             finally
             {

@@ -78,7 +78,7 @@ public class GerenciadorIED
             if (tempoInatividade > tempoAvisoInatividade && tempoInatividade < tempoDesligarInatividade)
             {
                 ConsoleWrapper.WriteLine($"[AVISO] IED ({ied.Id}) inativo por mais de 1 minuto.", "amarelo");
-                await envioMensagem.EnviarAvisoInatividadeAsync("127.0.0.1", 5000, ied.Id);
+                await envioMensagem.EnviarAvisoInatividadeAsync("127.0.0.1", 4000, ied.Id);
             }
             else if (tempoInatividade >= tempoDesligarInatividade)
             {
